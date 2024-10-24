@@ -5,20 +5,27 @@ var currentAttempt = 0;
 startReposting();
 
 function performRepost() {
-  var divElements = document.querySelectorAll('div');
-  for (var i = 0; i < divElements.length; i++) {
-    var div = divElements[i];
-    if (div.getAttribute("aria-label") && div.getAttribute("aria-label").includes(targetText)) {
-      div.click();
-      setTimeout(function () {
-        const spans = document.querySelectorAll('span');
-        for (const span of spans) {
-          if (span.textContent === targetText) {
-            span.click();
-            return;
+  if (currentAttempt < maxAttempts) {
+    var buttonElements = document.querySelectorAll('button');
+
+    for (var i = 0; i < buttonElements.length; i++) {
+      var button = buttonElements[i];
+
+      if (button.getAttribute("aria-label") && button.getAttribute("aria-label").includes(targetText)) {
+        button.click();
+
+        setTimeout(function () {
+          const spans = document.querySelectorAll('span');
+
+          for (const span of spans) {
+            if (span.textContent === targetText) {
+              span.click();
+              return;
+            }
           }
-        }
-      }, 1000);
+        }, 1000);
+        return;
+      }
     }
   }
 }
@@ -31,3 +38,4 @@ function startReposting() {
     setTimeout(startReposting, 500);
   }
 }
+
